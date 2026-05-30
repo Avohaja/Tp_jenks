@@ -10,4 +10,5 @@ public interface ITransferService {
 	
 	List<Transfer> findAllTransfersFrom24Hours(Long userId);
 
+
 }

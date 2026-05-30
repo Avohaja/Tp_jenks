@@ -1,5 +1,6 @@
 package com.demo.bankapp.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,8 +13,8 @@ import com.demo.bankapp.model.Transaction;
 @RepositoryRestResource(exported = false)
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-	@Query(value = "SELECT COUNT(*) FROM Transaction WHERE userId = :userId and transactionTime >= DATEADD(day, -1, GETDATE())")
-	int getOperationCountFromLast24Hours(@Param("userId") Long userId);
+	@Query(value = "SELECT COUNT(*) FROM Transaction WHERE userId = :userId and transactionTime >= :cutoff")
+	int getOperationCountFromLast24Hours(@Param("userId") Long userId, @Param("cutoff") Date cutoff);
 	
 	List<Transaction> findAllByUserId(Long userId);
 

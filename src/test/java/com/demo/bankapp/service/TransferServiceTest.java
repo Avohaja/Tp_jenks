@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -49,7 +50,7 @@ public class TransferServiceTest {
 		Transfer mockedTransfer = new Transfer(5816L, 2181L, "AUD", BigDecimal.valueOf(25125));
 		mockedTransferList.add(mockedTransfer);
 		
-		Mockito.when(repository.findAllTransfersFrom24Hours(mockedTransfer.getFromUserId())).thenReturn(mockedTransferList);
+		Mockito.when(repository.findAllTransfersFrom24Hours(Mockito.any(), Mockito.any(Date.class))).thenReturn(mockedTransferList);
 		List<Transfer> foundTransferList = service.findAllTransfersFrom24Hours(mockedTransfer.getFromUserId());
 		
 		assertThat(foundTransferList).isEqualTo(mockedTransferList);

@@ -40,10 +40,6 @@ public void setUp() {
     mockedUserId = 5125L;
     mockedWealth = new Wealth(mockedUserId, mockedWealthMap);
 
-    // 🔥 IMPORTANT: match strict + fallback safe
-    when(repository.findById(mockedUserId))
-            .thenReturn(Optional.of(mockedWealth));
-
     when(repository.findById(anyLong()))
             .thenReturn(Optional.of(mockedWealth));
 

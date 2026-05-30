@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void getOperationCountFromLast24Hours() {
-		Mockito.when(repository.getOperationCountFromLast24Hours(Mockito.any())).thenReturn(20);
+		Mockito.when(repository.getOperationCountFromLast24Hours(Mockito.any(), Mockito.any(Date.class))).thenReturn(20);
 		
 		int operationCount = service.getOperationCountFromLast24Hours(12161L);
 		assertThat(operationCount).isPositive();

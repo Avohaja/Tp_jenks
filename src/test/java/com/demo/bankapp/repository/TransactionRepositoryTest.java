@@ -3,6 +3,7 @@ package com.demo.bankapp.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -48,7 +49,8 @@ public class TransactionRepositoryTest {
 		assertThat(savedTransfer.getTransactionTime()).isEqualTo(transactionToSave.getTransactionTime());
 
 		// getOperationCountFromLast24Hours
-		int operationCount = repository.getOperationCountFromLast24Hours(transactionToSave.getUserId());
+		Date cutoff = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
+		int operationCount = repository.getOperationCountFromLast24Hours(transactionToSave.getUserId(), cutoff);
 		assertThat(operationCount).isEqualTo(1);
 
 		// findAllByUserId

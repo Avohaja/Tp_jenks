@@ -1,5 +1,6 @@
 package com.demo.bankapp.service.concretions;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class TransferService implements ITransferService {
 
 	@Override
 	public List<Transfer> findAllTransfersFrom24Hours(Long userId) {
-		return repository.findAllTransfersFrom24Hours(userId);
+		Date cutoff = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
+		return repository.findAllTransfersFrom24Hours(userId, cutoff);
 	}
 
 }

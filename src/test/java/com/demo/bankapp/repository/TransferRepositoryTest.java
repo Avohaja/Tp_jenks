@@ -3,6 +3,7 @@ package com.demo.bankapp.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -48,7 +49,8 @@ public class TransferRepositoryTest {
 		assertThat(savedTransfer.getAmount()).isEqualTo(transferToSave.getAmount());
 		
 		// findAllTransfersFrom24Hours
-		List<Transfer> transferList = repository.findAllTransfersFrom24Hours(savedTransfer.getFromUserId());
+		Date cutoff = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000L);
+		List<Transfer> transferList = repository.findAllTransfersFrom24Hours(savedTransfer.getFromUserId(), cutoff);
 		assertThat(transferList.size()).isEqualTo(1);
 	}
 
