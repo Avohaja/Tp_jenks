@@ -14,6 +14,7 @@ import com.demo.bankapp.model.Wealth;
 import com.demo.bankapp.repository.WealthRepository;
 import com.demo.bankapp.service.concretions.WealthService;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
@@ -36,10 +37,18 @@ public void setUp() {
     mockedWealthMap.put("EUR", BigDecimal.valueOf(3000));
     mockedWealthMap.put("AUD", BigDecimal.ZERO);
 
-    mockedWealth = new Wealth(5125L, mockedWealthMap);
+    mockedUserId = 5125L;
+    mockedWealth = new Wealth(mockedUserId, mockedWealthMap);
+
+    // 🔥 IMPORTANT: match strict + fallback safe
+    when(repository.findById(mockedUserId))
+            .thenReturn(Optional.of(mockedWealth));
 
     when(repository.findById(anyLong()))
             .thenReturn(Optional.of(mockedWealth));
+
+    when(repository.save(any()))
+            .thenReturn(mockedWealth);
 
     service = spy(new WealthService(repository));
 
