@@ -109,10 +109,26 @@ public class WealthService implements IWealthService {
 
 	@Override
 	public Map<String, Double> getCurrencyRates() {
-		final String uri = "https://api.exchangeratesapi.io/latest?base=TRY";
+		try {
+			final String uri = "https://open.er-api.com/v6/latest/TRY";
+			RestTemplate restTemplate = new RestTemplate();
+			Map<String, Object> response = restTemplate.getForObject(uri, Map.class);
+			if (response != null && response.get("rates") instanceof Map) {
+				return (Map<String, Double>) response.get("rates");
+			}
+		} catch (Exception e) {
+			// fallback
+		}
+		return getDefaultRates();
+	}
 
-		RestTemplate restTemplate = new RestTemplate();
-		return ((Map<String, Map<String, Double>>) restTemplate.getForObject(uri, Map.class)).get("rates");
+	private Map<String, Double> getDefaultRates() {
+		Map<String, Double> rates = new HashMap<>();
+		rates.put("USD", 0.031);
+		rates.put("EUR", 0.029);
+		rates.put("TRY", 1.0);
+		rates.put("AUD", 0.048);
+		return rates;
 	}
 
 	private void addInitialBalance(Map<String, BigDecimal> wealthMap) {
