@@ -10,17 +10,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.demo.bankapp.exception.BadRequestException;
-import com.demo.bankapp.exception.InsufficientFundsException;
 import com.demo.bankapp.model.Wealth;
 import com.demo.bankapp.repository.WealthRepository;
 import com.demo.bankapp.service.concretions.WealthService;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WealthServiceTest {
@@ -46,22 +41,17 @@ public class WealthServiceTest {
         mockedUserId = 5125L;
         mockedWealth = new Wealth(mockedUserId, mockedWealthMap);
 
-        Mockito.when(repository.findById(mockedUserId))
-               .thenReturn(Optional.of(mockedWealth));
+        when(repository.findById(mockedUserId))
+                .thenReturn(Optional.of(mockedWealth));
+    }
 
-        // 🔥 FIX CRUCIAL
-        WealthService spyService = Mockito.spy(service);
+    @Test
+    public void newWealthRecord() {
+        service.newWealthRecord(25161L);
+    }
 
-        Map<String, Double> fakeRates = new HashMap<>();
-        fakeRates.put("USD", 1.0);
-        fakeRates.put("EUR", 1.0);
-        fakeRates.put("TRY", 1.0);
-        fakeRates.put("AUD", 1.0);
-
-        Mockito.doReturn(fakeRates)
-               .when(spyService)
-               .getCurrencyRates();
-
-        service = spyService;
+    @Test
+    public void makeWealthExchange() {
+        service.makeWealthExchange(mockedUserId, "USD", BigDecimal.valueOf(150), true);
     }
 }
