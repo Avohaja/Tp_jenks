@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import com.demo.bankapp.model.Wealth;
@@ -16,14 +15,12 @@ import com.demo.bankapp.repository.WealthRepository;
 import com.demo.bankapp.service.concretions.WealthService;
 
 import static org.mockito.Mockito.*;
-
 @RunWith(MockitoJUnitRunner.class)
 public class WealthServiceTest {
 
     @Mock
     private WealthRepository repository;
 
-    @InjectMocks
     private WealthService service;
 
     private Wealth mockedWealth;
@@ -43,6 +40,23 @@ public class WealthServiceTest {
 
         when(repository.findById(mockedUserId))
                 .thenReturn(Optional.of(mockedWealth));
+
+        when(repository.findById(25161L))
+                .thenReturn(Optional.of(mockedWealth));
+
+        // 🔥 IMPORTANT : création manuelle + spy
+        service = spy(new WealthService(repository));
+
+        // 🔥 MOCK API EXTERNE
+        Map<String, Double> fakeRates = new HashMap<>();
+        fakeRates.put("USD", 1.0);
+        fakeRates.put("EUR", 1.0);
+        fakeRates.put("TRY", 1.0);
+        fakeRates.put("AUD", 1.0);
+
+        doReturn(fakeRates)
+                .when(service)
+                .getCurrencyRates();
     }
 
     @Test
