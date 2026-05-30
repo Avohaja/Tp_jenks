@@ -8,9 +8,13 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
+//import org.springframework.boot.test.mock.mockito.MockBean;
+//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.demo.bankapp.exception.BadRequestException;
 import com.demo.bankapp.exception.InsufficientFundsException;
@@ -18,12 +22,14 @@ import com.demo.bankapp.model.Wealth;
 import com.demo.bankapp.repository.WealthRepository;
 import com.demo.bankapp.service.concretions.WealthService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class WealthServiceTest {
 
-	@MockBean
+	@Mock
 	private WealthRepository repository;
 
+	@Spy
+	@InjectMocks
 	private WealthService service;
 
 	private Wealth mockedWealth;
