@@ -6,6 +6,10 @@ COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
+RUN ls -la
+RUN ls -la .mvn
+
+RUN chmod +x mvnw
 RUN ./mvnw package
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 

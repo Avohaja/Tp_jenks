@@ -16,7 +16,8 @@ pipeline {
                 bat 'java -version'
                 bat 'mvn -version'
         }
-}
+    }
+
         stage('Build the application') {
             steps {
                 bat 'mvn clean install'
@@ -41,3 +42,4 @@ pipeline {
             }
         }
     }
+}
