@@ -44,11 +44,17 @@ pipeline {
     }
 
     post {
-    failure {
-        emailext body: 'Ce Build $BUILD_NUMBER a échoué',
+        failure {
+            emailext body: 'Ce Build $BUILD_NUMBER a échoué',
                  recipientProviders: [requestor()],
                  subject: 'Build échoué',
                  to: 'avohajaralambonomena@gmail.com'
+        }
+        success {
+            emailext body: 'Ce Build $BUILD_NUMBER a réussi',
+                 recipientProviders: [requestor()],
+                 subject: 'Build réussi',
+                 to: 'avohajaralambonomena@gmail.com'
+        }
     }
-}
 }
