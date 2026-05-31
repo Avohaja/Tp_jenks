@@ -7,29 +7,12 @@ COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
-# Vérifications
-RUN ls -la
-RUN ls -la .mvn
-RUN ls -la .mvn/wrapper
+RUN sed -i 's/\r$//' mvnw
 
-# Vérifier le début du script
-RUN head -5 mvnw
-
-# Vérifier la présence éventuelle de CRLF (^M)
-RUN cat -A mvnw | head -5
-
-# Rendre exécutable
 RUN chmod +x mvnw
 
-# Tester l'interpréteur shell
-RUN which sh
-RUN sh --version || true
-
-# Tester le wrapper sans exécution directe
-RUN sh mvnw --version
-
-# Build Maven
-RUN sh mvnw package
+RUN ./mvnw --version
+RUN ./mvnw package
 
 RUN mkdir -p target/dependency && \
     (cd target/dependency && jar -xf ../*.jar)
