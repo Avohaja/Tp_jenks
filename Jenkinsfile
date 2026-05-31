@@ -16,7 +16,7 @@ pipeline {
                 bat 'java -version'
                 bat 'mvn -version'
         }
-    }
+        }
 
         stage('Build the application') {
             steps {
@@ -42,4 +42,13 @@ pipeline {
             }
         }
     }
+
+    post {
+    failure {
+        emailext body: 'Ce Build $BUILD_NUMBER a échoué',
+                 recipientProviders: [requestor()],
+                 subject: 'Build échoué',
+                 to: 'avohajaralambonomena@gmail.com'
+    }
+}
 }
